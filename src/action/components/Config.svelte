@@ -49,6 +49,11 @@
       configKey={GlobalConfigKey.Tags}
       friendlyName="Tags"
       placeholder="tag1,tag2,tag3" />
+
+    <ConfigField
+      configKey={GlobalConfigKey.AddTimestamp}
+      friendlyName="Add Timestamp"
+      placeholder="true,false" /> <!-- TODO Make this a real checkbox -->
   </details>
 </div>
 
@@ -66,7 +71,7 @@
   select {
     margin-top: 3px;
   }
-  
+
   div {
     margin-bottom: 3px;
   }

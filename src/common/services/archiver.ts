@@ -20,7 +20,7 @@ export default class ArchiveBoxArchiver extends EventEmitter implements IArchive
     this.domainList = domainList
     this.config = config
   }
-  
+
   async shouldArchive(url: string): Promise<boolean> {
     const mode = await this.config.get(GlobalConfigKey.ArchiveMode, "allowlist")
 
@@ -78,11 +78,18 @@ export default class ArchiveBoxArchiver extends EventEmitter implements IArchive
   private async sendUrls(urls: string[]): Promise<boolean> {
     const baseUrl = await this.config.get(GlobalConfigKey.ArchiveBoxBaseUrl, "")
     const tags = await this.config.get(GlobalConfigKey.Tags, "")
+    const addTimestamp = await this.config.get(GlobalConfigKey.AddTimestamp, "")
 
     if (baseUrl === "") return
 
     const granted = await this.requestPermissionsForHost(baseUrl)
     if (!granted) return false
+
+    if (addTimestamp === "true") {
+      const timestamp: Date = new Date();
+      const timestampFormatted: string = timestamp.toISOString().replace(/Z$/m, "+00:00");
+      urls = urls.map(url => `${url}#${timestampFormatted}`);
+    }
 
     const body = new FormData()
     body.append("url", urls.join("\n"))
