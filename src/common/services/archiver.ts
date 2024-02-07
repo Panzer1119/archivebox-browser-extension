@@ -87,7 +87,7 @@ export default class ArchiveBoxArchiver extends EventEmitter implements IArchive
 
     if (addTimestamp === "true") {
       const timestamp: Date = new Date();
-      const timestampFormatted: string = timestamp.toISOString().replace(/Z$/m, "+00:00");
+      const timestampFormatted: string = timestamp.toISOString().replace(/Z$/m, "+00:00").replace(/\.\d\d\d/g, "");
       urls = urls.map(url => `${url}#${timestampFormatted}`);
     }
 
